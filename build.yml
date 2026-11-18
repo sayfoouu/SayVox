@@ -1,0 +1,24 @@
+name: Build SayVox VST3 (Windows)
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurer
+        run: cmake -B build -A x64
+
+      - name: Compiler (Release)
+        run: cmake --build build --config Release --target SayVox_VST3
+
+      - name: Envoyer le plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: SayVox-VST3-Windows
+          path: build/SayVox_artefacts/Release/VST3/SayVox.vst3
